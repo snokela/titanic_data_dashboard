@@ -26,7 +26,7 @@ st.title("🚢 Titanic Data Dashboard")
 
 st.divider()
 
-with st.expander("✅ **Full Titanic Dataset** (Click to Expand)"):
+with st.expander(" **Full Titanic Dataset** (Click to Expand)"):
   st.dataframe(df)
 
 st.divider()
@@ -59,3 +59,23 @@ st.divider()
 
 # PIVOT TABLE AND BAR CHART - average fares
 st.subheader("Average Fare per Travel Class")
+
+with st.container():
+  col1, col2 = st.columns(2)
+
+  # Pivot Table - Average Fares by Travel Class
+  with col1:
+    st.write(f"##### Pivot Table - Average Fare ({selected_gender if selected_gender != 'All' else 'All Genders'})")
+    pivot_df = filtered_df.pivot_table(index="Pclass", values="Fare", aggfunc="mean")
+    st.dataframe(pivot_df.style.format("{:.2f} €"))  # Formatting fares in euros
+
+  # Bar Chart for Average Fares
+  with col2:
+    st.write(f"##### Average Fare by Travel Class ({selected_gender if selected_gender != 'All' else 'All Genders'})")
+    fig3, ax3 = plt.subplots()
+    ax3.bar(pivot_df.index, pivot_df["Fare"], color=['green', 'yellow', 'red'])
+    ax3.set_xlabel("Travel Class")
+    ax3.set_ylabel("Average Fare (€)")
+    ax3.set_title("Average Fare per Travel Class")
+    ax3.set_xticks(pivot_df.index)
+    st.pyplot(fig3)
