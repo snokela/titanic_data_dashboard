@@ -2,7 +2,9 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('Titanic-Dataset.csv')
+url = 'https://raw.githubusercontent.com/snokela/titanic_data_dashboard/refs/heads/main/Titanic-Dataset.csv'
+
+df = pd.read_csv(url)
 
 ####### SIDEBAR #######
 
