@@ -8,25 +8,30 @@ df = pd.read_csv('Titanic-Dataset.csv')
 
 st.sidebar.title('Filters')
 
-# Select sex
+# Select gender
 unique_sex = df['Sex'].unique().tolist()
-selected_sex = st.sidebar.selectbox("Select a sex", ['All'] + unique_sex)
+selected_gender = st.sidebar.selectbox("Select a gender", ['All'] + unique_sex)
 
 # Select travel class
 selected_pclass = st.sidebar.multiselect("Select travel class", df['Pclass'].unique(), default=df['Pclass'].unique())
 
 # Filter data based on selections
 filtered_df = df[df['Pclass'].isin(selected_pclass)]
-if selected_sex != 'All':
-  filtered_df = filtered_df[filtered_df['Sex'] == selected_sex]
+if selected_gender != 'All':
+  filtered_df = filtered_df[filtered_df['Sex'] == selected_gender]
 
 ####### DASHBOARD #######
 
 st.title("🚢 Titanic Data Dashboard")
-df
+
 st.divider()
 
-# BAR CHART - Survival Rate by Travel Class
+with st.expander("✅ **Full Titanic Dataset** (Click to Expand)"):
+  st.dataframe(df)
+
+st.divider()
+
+# BAR CHART - Survival rate by travel class
 st.subheader("Survival Rate by Travel Class")
 survival_rates = filtered_df.groupby("Pclass")["Survived"].mean() * 100
 
@@ -41,7 +46,7 @@ with st.container():
 
 st.divider()
 
-# Pie chart and Pivot table on the same row
+# PIE CHART - passenger distribution
 st.subheader("Passenger Distribution")
 with st.container():
     pclass_counts = filtered_df["Pclass"].value_counts()
@@ -52,3 +57,5 @@ with st.container():
 
 st.divider()
 
+# PIVOT TABLE AND BAR CHART - average fares
+st.subheader("Average Fare per Travel Class")
