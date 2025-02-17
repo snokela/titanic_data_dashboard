@@ -20,6 +20,9 @@ filtered_df = df[df['Pclass'].isin(selected_pclass)]
 if selected_gender != 'All':
   filtered_df = filtered_df[filtered_df['Sex'] == selected_gender]
 
+# define gender_text
+gender_text = selected_gender if selected_gender != 'All' else 'All Genders'
+
 ####### DASHBOARD #######
 
 st.title("🚢 Titanic Data Dashboard")
@@ -40,7 +43,7 @@ with st.container():
     ax.bar(survival_rates.index, survival_rates, color=['blue', 'orange', 'green'])
     ax.set_xlabel("Travel Class")
     ax.set_ylabel("Survival Rate (%)")
-    ax.set_title("Survival Rate by Travel Class")
+    ax.set_title(f"Passenger Distribution by Travel Class ({gender_text})", fontsize=9)
     ax.set_xticks(survival_rates.index)
     st.pyplot(fig)
 
@@ -52,7 +55,7 @@ with st.container():
     pclass_counts = filtered_df["Pclass"].value_counts()
     fig2, ax2 = plt.subplots()
     ax2.pie(pclass_counts, labels=pclass_counts.index, autopct='%1.1f%%', colors=['gold', 'silver', 'brown'])
-    ax2.set_title("Passenger Distribution by Travel Class", fontsize=9)
+    ax2.set_title(f"Passenger Distribution by Travel Class ({gender_text})")
     st.pyplot(fig2)
 
 st.divider()
@@ -63,15 +66,15 @@ st.subheader("Average Fare per Travel Class")
 with st.container():
   col1, col2 = st.columns(2)
 
-  # Pivot Table - Average Fares by Travel Class
+  # Pivot table - Average fares by travel class
   with col1:
-    st.write(f"##### Pivot Table - Average Fare ({selected_gender if selected_gender != 'All' else 'All Genders'})")
+    st.write(f"##### Pivot Table - Average Fare ({gender_text})")
     pivot_df = filtered_df.pivot_table(index="Pclass", values="Fare", aggfunc="mean")
     st.dataframe(pivot_df.style.format("{:.2f} €"))  # Formatting fares in euros
 
-  # Bar Chart for Average Fares
+  # Bar chart for average fares
   with col2:
-    st.write(f"##### Average Fare by Travel Class ({selected_gender if selected_gender != 'All' else 'All Genders'})")
+    st.write(f"##### Average Fare by Travel Class ({gender_text})")
     fig3, ax3 = plt.subplots()
     ax3.bar(pivot_df.index, pivot_df["Fare"], color=['green', 'yellow', 'red'])
     ax3.set_xlabel("Travel Class")
@@ -79,3 +82,5 @@ with st.container():
     ax3.set_title("Average Fare per Travel Class")
     ax3.set_xticks(pivot_df.index)
     st.pyplot(fig3)
+
+st.divider()
