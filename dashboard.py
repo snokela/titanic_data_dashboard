@@ -7,17 +7,6 @@ df = pd.read_csv('Titanic-Dataset.csv')
 ####### SIDEBAR #######
 
 st.sidebar.title('Filters')
-# st.sidebar.info("ℹ️ **Tip:** Uncheck 'Show full dataset' to enable filters.")
-
-# # show full dataset
-# show_full_df =  st.sidebar.checkbox('Show full dataset', value=True)
-
-# select age range
-# min_age = df["Age"].min()
-# max_age = df["Age"].max()
-#avg_year = df["Age"].mean()  -> 29,699 -> (25-30)
-
-# selected_age = st.sidebar.slider("Select age range", float(min_age), float(max_age), (float(25) - float(30)))
 
 # Select sex
 unique_sex = df['Sex'].unique().tolist()
@@ -51,3 +40,15 @@ with st.container():
     st.pyplot(fig)
 
 st.divider()
+
+# Pie chart and Pivot table on the same row
+st.subheader("Passenger Distribution")
+with st.container():
+    pclass_counts = filtered_df["Pclass"].value_counts()
+    fig2, ax2 = plt.subplots()
+    ax2.pie(pclass_counts, labels=pclass_counts.index, autopct='%1.1f%%', colors=['gold', 'silver', 'brown'])
+    ax2.set_title("Passenger Distribution by Travel Class", fontsize=9)
+    st.pyplot(fig2)
+
+st.divider()
+
