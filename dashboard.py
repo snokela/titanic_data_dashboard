@@ -34,6 +34,22 @@ with st.expander(" **Full Titanic Dataset** (Click to Expand)"):
 
 st.divider()
 
+# METRIC - displays the number of survivors and deceased
+survived = filtered_df["Survived"].sum()
+died = len(filtered_df) - survived
+
+st.subheader(f"Survival Overview ({gender_text})")
+with st.container():
+  col1, col2 = st.columns(2)
+
+  with col1:
+      st.metric(label="🟢 Survivors", value=survived)
+
+  with col2:
+      st.metric(label="🔴 Did Not Survive", value=died)
+
+st.divider()
+
 # BAR CHART - Survival rate by travel class
 st.subheader("Survival Rate by Travel Class")
 survival_rates = filtered_df.groupby("Pclass")["Survived"].mean() * 100
